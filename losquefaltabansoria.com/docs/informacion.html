@@ -1,0 +1,417 @@
+<%@LANGUAGE="VBSCRIPT"%>
+<!--#include file="connections/cnx_datosLQF.asp" -->
+<%
+Dim rstNoticias
+Dim rstNoticias_numRows
+
+Set rstNoticias = Server.CreateObject("ADODB.Recordset")
+rstNoticias.ActiveConnection = MM_cnx_datosLQF_STRING
+rstNoticias.Source = "SELECT *  FROM NOTICIAS  ORDER BY FechaNOT DESC"
+rstNoticias.CursorType = 0
+rstNoticias.CursorLocation = 2
+rstNoticias.LockType = 1
+rstNoticias.Open()
+
+rstNoticias_numRows = 0
+%>
+<%
+Dim Repeat1__numRows
+Dim Repeat1__index
+
+Repeat1__numRows = 10
+Repeat1__index = 0
+rstNoticias_numRows = rstNoticias_numRows + Repeat1__numRows
+%>
+<%
+'  *** Recordset Stats, Move To Record, and Go To Record: declare stats variables
+
+Dim rstNoticias_total
+Dim rstNoticias_first
+Dim rstNoticias_last
+
+' set the record count
+rstNoticias_total = rstNoticias.RecordCount
+
+' set the number of rows displayed on this page
+If (rstNoticias_numRows < 0) Then
+  rstNoticias_numRows = rstNoticias_total
+Elseif (rstNoticias_numRows = 0) Then
+  rstNoticias_numRows = 1
+End If
+
+' set the first and last displayed record
+rstNoticias_first = 1
+rstNoticias_last  = rstNoticias_first + rstNoticias_numRows - 1
+
+' if we have the correct record count, check the other stats
+If (rstNoticias_total <> -1) Then
+  If (rstNoticias_first > rstNoticias_total) Then
+    rstNoticias_first = rstNoticias_total
+  End If
+  If (rstNoticias_last > rstNoticias_total) Then
+    rstNoticias_last = rstNoticias_total
+  End If
+  If (rstNoticias_numRows > rstNoticias_total) Then
+    rstNoticias_numRows = rstNoticias_total
+  End If
+End If
+%>
+<%
+Dim MM_paramName 
+%>
+<%
+' *** Move To Record and Go To Record: declare variables
+
+Dim MM_rs
+Dim MM_rsCount
+Dim MM_size
+Dim MM_uniqueCol
+Dim MM_offset
+Dim MM_atTotal
+Dim MM_paramIsDefined
+
+Dim MM_param
+Dim MM_index
+
+Set MM_rs    = rstNoticias
+MM_rsCount   = rstNoticias_total
+MM_size      = rstNoticias_numRows
+MM_uniqueCol = ""
+MM_paramName = ""
+MM_offset = 0
+MM_atTotal = false
+MM_paramIsDefined = false
+If (MM_paramName <> "") Then
+  MM_paramIsDefined = (Request.QueryString(MM_paramName) <> "")
+End If
+%>
+<%
+' *** Move To Record: handle 'index' or 'offset' parameter
+
+if (Not MM_paramIsDefined And MM_rsCount <> 0) then
+
+  ' use index parameter if defined, otherwise use offset parameter
+  MM_param = Request.QueryString("index")
+  If (MM_param = "") Then
+    MM_param = Request.QueryString("offset")
+  End If
+  If (MM_param <> "") Then
+    MM_offset = Int(MM_param)
+  End If
+
+  ' if we have a record count, check if we are past the end of the recordset
+  If (MM_rsCount <> -1) Then
+    If (MM_offset >= MM_rsCount Or MM_offset = -1) Then  ' past end or move last
+      If ((MM_rsCount Mod MM_size) > 0) Then         ' last page not a full repeat region
+        MM_offset = MM_rsCount - (MM_rsCount Mod MM_size)
+      Else
+        MM_offset = MM_rsCount - MM_size
+      End If
+    End If
+  End If
+
+  ' move the cursor to the selected record
+  MM_index = 0
+  While ((Not MM_rs.EOF) And (MM_index < MM_offset Or MM_offset = -1))
+    MM_rs.MoveNext
+    MM_index = MM_index + 1
+  Wend
+  If (MM_rs.EOF) Then 
+    MM_offset = MM_index  ' set MM_offset to the last possible record
+  End If
+
+End If
+%>
+<%
+' *** Move To Record: if we dont know the record count, check the display range
+
+If (MM_rsCount = -1) Then
+
+  ' walk to the end of the display range for this page
+  MM_index = MM_offset
+  While (Not MM_rs.EOF And (MM_size < 0 Or MM_index < MM_offset + MM_size))
+    MM_rs.MoveNext
+    MM_index = MM_index + 1
+  Wend
+
+  ' if we walked off the end of the recordset, set MM_rsCount and MM_size
+  If (MM_rs.EOF) Then
+    MM_rsCount = MM_index
+    If (MM_size < 0 Or MM_size > MM_rsCount) Then
+      MM_size = MM_rsCount
+    End If
+  End If
+
+  ' if we walked off the end, set the offset based on page size
+  If (MM_rs.EOF And Not MM_paramIsDefined) Then
+    If (MM_offset > MM_rsCount - MM_size Or MM_offset = -1) Then
+      If ((MM_rsCount Mod MM_size) > 0) Then
+        MM_offset = MM_rsCount - (MM_rsCount Mod MM_size)
+      Else
+        MM_offset = MM_rsCount - MM_size
+      End If
+    End If
+  End If
+
+  ' reset the cursor to the beginning
+  If (MM_rs.CursorType > 0) Then
+    MM_rs.MoveFirst
+  Else
+    MM_rs.Requery
+  End If
+
+  ' move the cursor to the selected record
+  MM_index = 0
+  While (Not MM_rs.EOF And MM_index < MM_offset)
+    MM_rs.MoveNext
+    MM_index = MM_index + 1
+  Wend
+End If
+%>
+<%
+' *** Move To Record: update recordset stats
+
+' set the first and last displayed record
+rstNoticias_first = MM_offset + 1
+rstNoticias_last  = MM_offset + MM_size
+
+If (MM_rsCount <> -1) Then
+  If (rstNoticias_first > MM_rsCount) Then
+    rstNoticias_first = MM_rsCount
+  End If
+  If (rstNoticias_last > MM_rsCount) Then
+    rstNoticias_last = MM_rsCount
+  End If
+End If
+
+' set the boolean used by hide region to check if we are on the last record
+MM_atTotal = (MM_rsCount <> -1 And MM_offset + MM_size >= MM_rsCount)
+%>
+<%
+' *** Go To Record and Move To Record: create strings for maintaining URL and Form parameters
+
+Dim MM_keepNone
+Dim MM_keepURL
+Dim MM_keepForm
+Dim MM_keepBoth
+
+Dim MM_removeList
+Dim MM_item
+Dim MM_nextItem
+
+' create the list of parameters which should not be maintained
+MM_removeList = "&index="
+If (MM_paramName <> "") Then
+  MM_removeList = MM_removeList & "&" & MM_paramName & "="
+End If
+
+MM_keepURL=""
+MM_keepForm=""
+MM_keepBoth=""
+MM_keepNone=""
+
+' add the URL parameters to the MM_keepURL string
+For Each MM_item In Request.QueryString
+  MM_nextItem = "&" & MM_item & "="
+  If (InStr(1,MM_removeList,MM_nextItem,1) = 0) Then
+    MM_keepURL = MM_keepURL & MM_nextItem & Server.URLencode(Request.QueryString(MM_item))
+  End If
+Next
+
+' add the Form variables to the MM_keepForm string
+For Each MM_item In Request.Form
+  MM_nextItem = "&" & MM_item & "="
+  If (InStr(1,MM_removeList,MM_nextItem,1) = 0) Then
+    MM_keepForm = MM_keepForm & MM_nextItem & Server.URLencode(Request.Form(MM_item))
+  End If
+Next
+
+' create the Form + URL string and remove the intial '&' from each of the strings
+MM_keepBoth = MM_keepURL & MM_keepForm
+If (MM_keepBoth <> "") Then 
+  MM_keepBoth = Right(MM_keepBoth, Len(MM_keepBoth) - 1)
+End If
+If (MM_keepURL <> "")  Then
+  MM_keepURL  = Right(MM_keepURL, Len(MM_keepURL) - 1)
+End If
+If (MM_keepForm <> "") Then
+  MM_keepForm = Right(MM_keepForm, Len(MM_keepForm) - 1)
+End If
+
+' a utility function used for adding additional parameters to these strings
+Function MM_joinChar(firstItem)
+  If (firstItem <> "") Then
+    MM_joinChar = "&"
+  Else
+    MM_joinChar = ""
+  End If
+End Function
+%>
+<%
+' *** Move To Record: set the strings for the first, last, next, and previous links
+
+Dim MM_keepMove
+Dim MM_moveParam
+Dim MM_moveFirst
+Dim MM_moveLast
+Dim MM_moveNext
+Dim MM_movePrev
+
+Dim MM_urlStr
+Dim MM_paramList
+Dim MM_paramIndex
+Dim MM_nextParam
+
+MM_keepMove = MM_keepBoth
+MM_moveParam = "index"
+
+' if the page has a repeated region, remove 'offset' from the maintained parameters
+If (MM_size > 1) Then
+  MM_moveParam = "offset"
+  If (MM_keepMove <> "") Then
+    MM_paramList = Split(MM_keepMove, "&")
+    MM_keepMove = ""
+    For MM_paramIndex = 0 To UBound(MM_paramList)
+      MM_nextParam = Left(MM_paramList(MM_paramIndex), InStr(MM_paramList(MM_paramIndex),"=") - 1)
+      If (StrComp(MM_nextParam,MM_moveParam,1) <> 0) Then
+        MM_keepMove = MM_keepMove & "&" & MM_paramList(MM_paramIndex)
+      End If
+    Next
+    If (MM_keepMove <> "") Then
+      MM_keepMove = Right(MM_keepMove, Len(MM_keepMove) - 1)
+    End If
+  End If
+End If
+
+' set the strings for the move to links
+If (MM_keepMove <> "") Then 
+  MM_keepMove = Server.HTMLEncode(MM_keepMove) & "&"
+End If
+
+MM_urlStr = Request.ServerVariables("URL") & "?" & MM_keepMove & MM_moveParam & "="
+
+MM_moveFirst = MM_urlStr & "0"
+MM_moveLast  = MM_urlStr & "-1"
+MM_moveNext  = MM_urlStr & CStr(MM_offset + MM_size)
+If (MM_offset - MM_size < 0) Then
+  MM_movePrev = MM_urlStr & "0"
+Else
+  MM_movePrev = MM_urlStr & CStr(MM_offset - MM_size)
+End If
+%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>Asociaci&oacute;n Cultural &quot;Pe&ntilde;a Los que Faltaban&quot;</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="_comun/CSS/lqf.css" rel="stylesheet" type="text/css">
+</head>
+
+<div id="banner">
+	<a name="inicio"></a>
+	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="950" height="150">
+    	<param name="movie" value="_comun/Flash/banner.swf">
+        <param name="quality" value="high">
+        <embed src="_comun/Flash/banner.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="950" height="150"></embed>
+  </object>
+</div>
+
+<div id="cuerpo_pagina">
+  <div id="enlaces"> 
+    <a href="#contacto">Informaci&oacute;n de Contacto</a> / <a href="#noticias">Noticias </a>/ <a href="#enlaces">Enlaces a otras Webs de inter&eacute;s </a> /
+  </div> 
+  <div id="encabezado"> 
+    <h1>Información de interés</h1> 
+  </div> 
+	<div id="col2">
+		<div class="normal">
+		  	<p>En esta p&aacute;gina encontrar&eacute;is noticias relevante para la Pe&ntilde;a, as&iacute; como nuestras direcciones de correo electr&oacute;nico y la direcci&oacute;n de nuestra sede social.</p>
+		</div>
+		<div class="normal">
+			<h1><a name="noticias">Noticias</a></h1>
+			<p>Para ver la noticia completa haz un clic en el título.</p>
+			<table border="0" width="50%" align="right">
+				<tr>
+					<td width="23%" align="center">
+                      <% If MM_offset <> 0 Then %>
+                      <a href="<%=MM_moveFirst%>">primero</a>
+                      <% End If ' end MM_offset <> 0 %></td>
+					<td width="31%" align="center">
+						<% If MM_offset <> 0 Then %>
+							<a href="<%=MM_movePrev%>">anterior</a>
+						    <% End If ' end MM_offset <> 0 %>
+					</td>
+					<td width="23%" align="center">
+                      <% If Not MM_atTotal Then %>
+                      <a href="<%=MM_moveNext%>">siguiente</a>
+                      <% End If ' end Not MM_atTotal %></td>
+					<td width="23%" align="center">
+						<% If Not MM_atTotal Then %>
+							<a href="<%=MM_moveLast%>">&uacute;ltimo</a>
+						    <% End If ' end Not MM_atTotal %>
+					</td>
+				</tr>
+			</table>
+			<p>
+				<%If Session("MM_Username") <> "" Then
+					If (false Or CStr(Session("MM_UserAuthorization"))="") Or (InStr(1,"ADM",Session("MM_UserAuthorization"))>=1) Then %>
+					  <a href="noticias/nueva_noticia.asp">Pulsa para crear una noticia nueva&gt;&gt; </a>
+					  <% End If
+				End If%>
+			</p>
+			
+				<% While ((Repeat1__numRows <> 0) AND (NOT rstNoticias.EOF)) %>
+				<p><%=(rstNoticias.Fields.Item("FechaNOT").Value)%>, <em><%=(rstNoticias.Fields.Item("AutorNOT").Value)%></em><br>
+		  		<strong><A HREF="noticias/noticia.asp?<%= Server.HTMLEncode(MM_keepNone) & MM_joinChar(MM_keepNone) & "idNoticia=" & rstNoticias.Fields.Item("SerieNOT").Value %>"><%=(rstNoticias.Fields.Item("TituloNOT").Value)%></A></strong></p>
+		  		<% Repeat1__index=Repeat1__index+1
+					Repeat1__numRows=Repeat1__numRows-1
+					rstNoticias.MoveNext()
+				Wend%>
+			
+			<p><a href="#inicio">Volver arriba &gt;&gt;</a> </p>
+	  </div>
+		<div class="secciones">
+		  	<h1><a name="contacto">Informaci&oacute;n de Contacto</a></h1>
+		  	<p>Para consultar cualquier tema, enviarnos informaci&oacute;n, o para lo que necesit&eacute;is, pod&eacute;is poneros en contacto 
+			con nosotros atrav&eacute;s de nuestros correos electr&oacute;nicos o en la sede social:</p>
+		  	<h3><strong>Sede Social.</strong></h3>
+		  	<p><strong>Asociaci&oacute;n Cultural &quot;Pe&ntilde;a Los que Faltaban&quot;. </strong><br>
+		  	Paseo del Espol&oacute;n S/N<BR>
+			&quot;Cafeter&iacute;a ALAMEDA&quot;<br>
+			42001 - SORIA<br>
+			TELF. 975224238 </p>
+		  	<h3><strong>Email.</strong></h3>
+		  	<p>Presidencia: <a href="mailto:presidencia@losquefaltabansoria.com">presidencia@losquefaltabansoria.com</a><br>
+  			Equipo Web: <a href="mailto:webmaster@losquefaltabansoria.com">webmaster@losquefaltabansoria.com</a></p>			<p><a href="#inicio">Volver arriba&gt;&gt; </a></p>
+		</div>
+	</div>
+		<div id="colDch">
+			<p align="right">Hoy es <strong><%=date()%></strong></p>
+			<%
+			idUsuario=session("MM_Username")
+			if idUsuario="" then
+				cdnSesion="No has iniciado sesión."
+			else
+				cdnSesion="Has iniciado sesión como "
+			end if
+			%>
+			<table width="100%"  border="1" cellpadding="5" bordercolor="#000000" bgcolor="#FFFFFF">
+   				<tr>
+   					<td><p>Llevamos <strong><%=application("visitas")%></strong> visitas desde Marzo del 2005</p></td>
+				</tr>
+				<tr>
+		  			<td><%=cdnSesion%><strong><%=idUsuario%></strong></td>
+				</tr>
+			</table>
+			<p></p>
+		</div>
+	<div id="pie">
+	  <p align="center">Sitio realizado en 2005 para la Pe&ntilde;a &quot;Los que Faltaban&quot; de Soria (Espa&ntilde;a)</p>
+	</div>
+</div>
+</body>
+</html>
+<%
+rstNoticias.Close()
+Set rstNoticias = Nothing
+%>

@@ -1,0 +1,241 @@
+<%@LANGUAGE="VBSCRIPT" CODEPAGE="1252"%>
+<!--#include file="connections/cnx_datosLQF.asp" -->
+
+<%
+Dim rstNoticias
+Dim rstNoticias_numRows
+
+Set rstNoticias = Server.CreateObject("ADODB.Recordset")
+rstNoticias.ActiveConnection = MM_cnx_datosLQF_STRING
+rstNoticias.Source = "SELECT * FROM NOTICIAS ORDER BY FechaNOT DESC"
+rstNoticias.CursorType = 0
+rstNoticias.CursorLocation = 2
+rstNoticias.LockType = 1
+rstNoticias.Open()
+
+rstNoticias_numRows = 0
+%>
+<%
+Dim Repeat1__numRows
+Dim Repeat1__index
+
+Repeat1__numRows = 3
+Repeat1__index = 0
+rstNoticias_numRows = rstNoticias_numRows + Repeat1__numRows
+%>
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<SCRIPT RUNAT=SERVER LANGUAGE=VBSCRIPT>					
+function DoDateTime(str, nNamedFormat, nLCID)				
+	dim strRet								
+	dim nOldLCID								
+										
+	strRet = str								
+	If (nLCID > -1) Then							
+		oldLCID = Session.LCID						
+	End If									
+										
+	On Error Resume Next							
+										
+	If (nLCID > -1) Then							
+		Session.LCID = nLCID						
+	End If									
+										
+	If ((nLCID < 0) Or (Session.LCID = nLCID)) Then				
+		strRet = FormatDateTime(str, nNamedFormat)			
+	End If									
+										
+	If (nLCID > -1) Then							
+		Session.LCID = oldLCID						
+	End If									
+										
+	DoDateTime = strRet							
+End Function									
+</SCRIPT>									
+<html>
+<head>
+<title>Asociaci&oacute;n Cultural &quot;Pe&ntilde;a Los que Faltaban&quot;</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link href="_comun/CSS/lqf.css" rel="stylesheet" type="text/css">
+<meta name="copyright" content="2005 Los que Faltaban Soria .com">
+<meta name="robots" content="ALL">
+<meta name="dc.creator" content="RYK">
+<meta name="revisit" content="15 days">
+<style type="text/css">
+<!--
+#img {
+	float: left;
+}
+-->
+</style>
+<script language="JavaScript" type="text/JavaScript">
+<!--
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+//-->
+</script>
+</head>
+
+<body onLoad="MM_preloadImages('_comun/Images/pToroWeb.jpg')">
+
+<div id="arriba">
+	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="950" height="150">
+    	<param name="movie" value="_comun/Flash/banner.swf">
+        <param name="quality" value="high">
+        <embed src="_comun/Flash/banner.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="950" height="150"></embed>
+  </object>
+</div>
+
+<div id="cuerpo_pagina">
+  <div id="enlaces"> 
+  <a href="#objetivos">Objetivos del Sitio </a> / <a href="#noticias">&Uacute;ltimas Noticias </a> / <a href="#secciones">Secciones de Inter&eacute;s </a>/
+			<%If Session("MM_Username") <> "" Then
+				If (false Or CStr(Session("MM_UserAuthorization"))="") Or (InStr(1,"ADM",Session("MM_UserAuthorization"))>=1) Then %>
+				<a href="administrar.htm"> Funciones de Administrador</a>/
+				<% End If
+			End If%>
+  </div> 
+  <div id="encabezado"> 
+    <h1>Bienvenidos</h1> 
+  </div> 
+	<div id="col2">
+		<div class="normal">
+			<p>Bienvenidos a la p&aacute;gina web de la Asociaci&oacute;n Cultural &quot;Pe&ntilde;a Los que Faltaban&quot;, pe&ntilde;a Sanjuanera de la ciudad de Soria.</p>
+			<h2>Editorial</h2>
+			
+			<h3>Sigue la Fiesta.</h3>
+			<p>Ya acabaron las Fiestas de este año, pero hemos empezado ha trabajar para que los del 2007 sean los mejores Sanjuanes que recordamos!</p>
+			<div align="center"><img name="img" src="/_comun/Images/portada2006.JPG" alt="Nueva Directiva">
+		  </div>
+			<p>Os esperamos a todos para que nos ayud&eacute;is a conseguirlo. </p>
+			<p>Carlos (<a href="mailto:presidencia2006@losquefaltabansoria.com">presidencia2006@losquefaltabansoria.com</a>).</p>
+	  </div>
+
+		<div class="normal">
+		  <h2><a name="noticias" id="noticias">&Uacute;ltimas Noticias. </a></h2>
+	  </div>
+		<div class="normal">
+<%
+			While ((Repeat1__numRows <> 0) AND (NOT rstNoticias.EOF)) 
+			%>
+  <em><%= DoDateTime((rstNoticias.Fields.Item("FechaNOT").Value), 0, -1) %></em><br>
+  <strong><%=(rstNoticias.Fields.Item("TituloNOT").Value)%></strong><br>
+  <%=(rstNoticias.Fields.Item("TextoNOT").Value)%>
+  <p></p>
+  <% 
+  				Repeat1__index=Repeat1__index+1
+  				Repeat1__numRows=Repeat1__numRows-1
+  				rstNoticias.MoveNext()
+			Wend
+		%>
+  <p>Para ver todas las noticias debes ir a <a href="informacion.asp">Informaci&oacute;n</a></p>
+  <p></p>		  
+		</div>
+		<div class="secciones">
+			<h2><a name="secciones">Secciones de interés</a></h2>
+			<p>A continuación se enumeran algunas secciones que os pueden resultar especialmente interesantes. <br>
+			No olvidéis vistarlas.</p>
+			<table width="100%" cellpadding="0" cellspacing="0" summary=""> 
+				<tr valign="top"> 
+					<td width="50%" class="seccionesIzq">
+						<p><a href="san_juan.asp" class="enlace">San Juan </a>
+						Para conocer mejor nuestras FIestas. </p>				  </td>
+					<td width="50%" >
+						<p><a href="audiovisual.asp" class="enlace">Medios Audiovisuales </a>
+						Fotos de fiestas, banderines, fotos de Soria y tambi&eacute;n las letras de las Sanjuaneras. </p>				  </td>
+				</tr> 
+				<tr valign="top"> 
+					<td width="50%" class="seccionesIzq">
+						<p><a href="nosotros.asp" class="enlace">Nuestra Pe&ntilde;a </a>
+						Para conocernos a nosotros </p>
+					</td>
+					<td width="50%" >
+						<p><a href="visitas.asp" class="enlace">Libro de Visitas </a>
+						Para dejar un saludo. </p>				  </td>
+				</tr>
+				<tr valign="top"> 
+					<td width="50%" class="seccionesIzq">
+						<p><a href="informacion.asp" class="enlace">Noticias de inter&eacute;s </a>
+						Para conocer las &uacute;ltimas novedades que nos afecten. </p>
+					</td>
+					<td width="50%" >
+						<p><a href="foro/" class="enlace">Foro</a>
+						Para establecer debates sobre los temas que m&aacute;s os interesen </p>				  </td>
+				</tr>
+				<tr valign="top"> 
+					<td width="50%" class="seccionesIzq">
+						<p><a href="patrocinadores.asp" class="enlace">Patrocinadores</a>
+						Aqu&iacute; encontrar&eacute;is las empresas que hacen posible que estemos aqu&iacute; </p>
+					</td>
+					<td width="50%" >
+						<p><a href="/webmail" class="enlace">Correo electr&oacute;nico </a>
+						Para que los socios puedan consultar su e-mail. </p>				  </td>
+				</tr>
+		  </table> 
+	  </div>
+		<div class="normal">
+		  	<h2><a name="objetivos" id="objetivos">Objetivo del Sitio</a></h2>
+		  	<p>Este sitio surgi&oacute; de la voluntad de dar a conocer nuestra <strong>Asociaci&oacute;n</strong> y nuestras			<strong>Fiestas de San Juan</strong> (o de la Madre de Dios)a todas aquellas personas amantes de nuestras Fiestas ,
+			a aquellas pe&ntilde;as hermanas en otros lugares de Espa&ntilde;a y, en fin, a todos los que gustan de armar			<em>&quot; la juerga y el foll&oacute;n </em>&quot;.<br>
+		  	Igualmente pretendemos que &eacute;ste sea un lugar de encuentro e informaci&oacute;n para los miembros de la Pe&ntilde;a
+		   	y de intercambio de experiencias con el resto de Pe&ntilde;as sanjuaneras. <br>
+		  	Por supuesto esto significa que agradeceremos cualquier tipo de comentarios, informaci&oacute;n o material que nos hag&aacute;is 
+		  llegar, bien personalmente o a trav&eacute;s de los foros o el correo electr&oacute;nico. </p>
+		  	<p>Muchas gracias a tod@s y &iexcl;Bienvenid@s!</p>
+		  	<p align="right"><em><a href="mailto:javier.garcia@losquefaltabansoria.com">Javier Garc&iacute;a (Puchi)</a>, Presidente 2005.</em><br>
+			<em><a href="mailto:ricardo.yague@losquefaltabansoria.com">Ricardo Yag&uuml;e</a>, webmaster.</em></p>
+		</div>
+	</div>
+		<div id="colDch">
+			<p align="right">Hoy es <strong><%=date()%></strong></p>
+			<%
+			idUsuario=session("MM_Username")
+			if idUsuario="" then
+				cdnSesion="No has iniciado sesión."
+			else
+				cdnSesion="Has iniciado sesión como "
+			end if
+			%>
+			<table width="100%"  border="1" cellpadding="5" bordercolor="#000000" bgcolor="#FFFFFF">
+   				<tr>
+   					<td><p>Llevamos <strong><%=application("visitas")%></strong> visitas desde Marzo del 2005</p></td>
+				</tr>
+				<tr>
+		  			<td><%=cdnSesion%><strong><%=idUsuario%></strong></td>
+				</tr>
+			</table>
+  			<p align="center"><a href="javascript:;" onMouseOver="MM_swapImage('imgLateral','','_comun/Images/pToroWeb.jpg',1)" onMouseOut="MM_swapImgRestore()"><img src="audiovisual/Fotos/Banderines/2006.jpg" name="imgLateral" width="150" height="205" border="0" id="imgLateral"></a></p>
+  			<p align="center">&nbsp;</p>
+		</div>
+	<div id="pie">
+	  <p align="center">Sitio realizado en 2005 para la Pe&ntilde;a &quot;Los que Faltaban&quot; de Soria (Espa&ntilde;a)</p>
+	</div>
+</div>
+</body>
+</html>
+<%
+rstNoticias.Close()
+Set rstNoticias = Nothing
+%>
