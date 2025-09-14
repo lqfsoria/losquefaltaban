@@ -87,10 +87,12 @@ body{
 }
 */
 .main-image {
-  max-width: 40%;
+
+  max-width: 75vw;
+  max-height: 60vh;
   /* box-shadow: 0 0 0 5rem rgba(0, 0, 0, 0.5) rectangular shadow; */
   filter: drop-shadow(0 0 5rem rgba(0, 0, 0, 0.5));
-  margin: 2rem;
+  margin: 1rem;
 }
 /*
 h2 {

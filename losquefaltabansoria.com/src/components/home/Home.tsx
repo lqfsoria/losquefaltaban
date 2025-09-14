@@ -20,14 +20,14 @@ const Home: React.FC = () => {
           </p>
           <p className="lead">
             <a
-              href="#"
+              href="#nosotros"
               className="btn btn-lg btn-secondary fw-bold border-white bg-white"
             >
-              Learn more
+              Saber más
             </a>
           </p>
         </section>
-        <section className="container marketing mb-auto bg-light text-dark p-5 text-start">
+        <section id="nosotros"className="container marketing mb-auto bg-light text-dark p-5 text-start">
           <header>
             <h2 className="featurette-heading fw-normal lh-1">Nosotros</h2>
             <p>
@@ -227,37 +227,7 @@ const Home: React.FC = () => {
                   <td align="center">&nbsp;</td>
                 </tr>
                 <tr>
-                  <td align="center">1968</td>
-                  <td>José Maria Recio</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1969</td>
-                  <td>José Maria Recio</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1970</td>
-                  <td>José Maria Recio</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1971</td>
-                  <td>José Maria Recio</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1972</td>
-                  <td>José Maria Recio</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1973</td>
-                  <td>José Maria Recio</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1974</td>
+                  <td align="center">1968-1974</td>
                   <td>José Maria Recio</td>
                   <td align="center">&nbsp;</td>
                 </tr>
@@ -282,52 +252,17 @@ const Home: React.FC = () => {
                   <td align="center">&nbsp;</td>
                 </tr>
                 <tr>
-                  <td align="center">1979</td>
+                  <td align="center">1979-1982</td>
                   <td>Jaime Fernández</td>
                   <td align="center">&nbsp;</td>
                 </tr>
                 <tr>
-                  <td align="center">1980</td>
-                  <td>Jaime Fernández</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1981</td>
-                  <td>Jaime Fernández</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1982</td>
-                  <td>Jaime Fernández</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1983</td>
+                  <td align="center">1983-1985</td>
                   <td>Gabriel García Heras</td>
                   <td align="center">&nbsp;</td>
                 </tr>
                 <tr>
-                  <td align="center">1984</td>
-                  <td>Gabriel García Heras</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1985</td>
-                  <td>Gabriel García Heras</td>
-                  <td align="center">&nbsp;</td>
-                </tr>
-                <tr>
-                  <td align="center">1986</td>
-                  <td>Javier Yubero</td>
-                  <td align="center">85</td>
-                </tr>
-                <tr>
-                  <td align="center">1987</td>
-                  <td>Javier Yubero</td>
-                  <td align="center">85</td>
-                </tr>
-                <tr>
-                  <td align="center">1988</td>
+                  <td align="center">1986-1988</td>
                   <td>Javier Yubero</td>
                   <td align="center">85</td>
                 </tr>
@@ -374,19 +309,14 @@ const Home: React.FC = () => {
                 <tr>
                   <td align="center">1997</td>
                   <td>
-                    Oscar Giaquinta García <br />
-                    Carlos García Fernández
+                    Oscar Giaquinta García, Carlos García Fernández
                   </td>
                   <td align="center">168</td>
                 </tr>
                 <tr>
                   <td align="center">1998</td>
                   <td>
-                    Oscar Molina Molina
-                    <br />
-                    Javier Martínez Mínguez
-                    <br />
-                    Misael Arauzo Martínez
+                    Oscar Molina Molina, Javier Martínez Mínguez, Misael Arauzo Martínez
                   </td>
                   <td align="center">162</td>
                 </tr>
@@ -423,8 +353,98 @@ const Home: React.FC = () => {
                 <tr>
                   <td align="center">2005</td>
                   <td>Javier Gonzalo García</td>
+                  <td align="center">253</td>
+                </tr>
+                <tr>
+                  <td align="center">2006</td>
+                  <td>Juan Carlos Pérez Ciria</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2007</td>
+                  <td>Alfnso Izquierdo Moreno</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2008</td>
+                  <td>Jordán Fernández Barranco</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2009</td>
+                  <td>Eloy Lafuente Fuentelsanz</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2010</td>
+                  <td>Óscar Acebes</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2011</td>
+                  <td>Rubén Pardo Barranco</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2012</td>
+                  <td>Diego Altelarrea</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2013</td>
+                  <td>Erneto del Río Soriano</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2014</td>
+                  <td>Íñigo Fradejas Díez</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2015</td>
+                  <td>Víctor Reyes Estepa</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2016</td>
+                  <td>Roberto Chico Blázquez</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2017</td>
+                  <td>Ricardo Yagüe Ruiz</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2018</td>
+                  <td>Néstor Martín Crespo</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2019</td>
+                  <td>Mario Recio Casero</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2020-2022</td>
+                  <td>Eloy Esqueta Herrera</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2023</td>
+                  <td>Santiago Sanz Andrés</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2024</td>
+                  <td>Javier Yubero Lafuente</td>
+                  <td align="center"></td>
+                </tr>
+                <tr>
+                  <td align="center">2025</td>
+                  <td>Diego Castillo Cano</td>
                   <td align="center">
-                    <strong>253</strong>
+                    <strong></strong>
                   </td>
                 </tr>
               </tbody>
